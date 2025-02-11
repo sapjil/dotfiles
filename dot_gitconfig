@@ -1,0 +1,20 @@
+[push]
+	autoSetupRemote = true
+[filter "lfs"]
+	process = git-lfs filter-process
+	required = true
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+[user]
+	name = sapjilmaster
+	email = sapjilmaster@gmail.com
+[core]
+	editor = code --wait
+[alias]
+    ci = commit
+	st = status
+	lg = log --graph --abbrev-commit --decorate --date=relative --format=format:'%C(bold red)%h%C(reset) : %C(bold green)(%ar)%C(reset) - %C(cyan)<%an>%C(reset)%C(bold yellow)%d%C(reset)%n%n%w(90,1,2)%C(white)%B%C(reset)%n'
+	llog = log --pretty='format:%C(yellow)%h %C(green)%cd %C(reset)%s %C(red)%d %C(cyan)[%an]' --date=format-local:'%Y/%m/%d %H:%M:%S'
+	push-f = --force-with-lease --force-if-includes origin HEAD
+[commit]
+	template = .gitmessage.txt
