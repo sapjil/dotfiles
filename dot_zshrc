@@ -111,3 +111,33 @@ prompt_context() {
   # prompt_segment black default "${nickname} ${emojis[$RAND_EMOJI_N]} "
   prompt_segment black default "${nickname}"
 }
+
+# iTerm2 명령어 사용가능여부 지원 하이라이팅
+source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+
+# iTerm2 자동완성 기능 추가
+source /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+
+# nvm을 자동으로 확인 및 적용, 없으면 설치까지 자동대응
+autoload -U add-zsh-hook
+load-nvmrc() {
+  local node_version="$(nvm version)"
+  local nvmrc_path="$(nvm_find_nvmrc)"
+
+  if [ -n "$nvmrc_path" ]; then
+    local nvmrc_node_version=$(nvm version "$(cat "${nvmrc_path}")")
+
+    if [ "$nvmrc_node_version" = "N/A" ]; then
+      nvm install
+    elif [ "$nvmrc_node_version" != "$node_version" ]; then
+      nvm use
+    fi
+  elif [ "$node_version" != "$(nvm version default)" ]; then
+    echo "Reverting to nvm default version"
+    nvm use default
+  fi
+}
+add-zsh-hook chpwd load-nvmrc
+load-nvmrc
